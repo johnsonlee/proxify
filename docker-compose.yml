@@ -1,0 +1,34 @@
+version: "3.0"
+
+services:
+  trojan:
+    build:
+      context: trojan
+      args:
+        TROJAN_SERVER_HOST: ${TROJAN_SERVER_HOST}
+        TROJAN_SERVER_PORT: ${TROJAN_SERVER_PORT}
+        TROJAN_PASSWORD: ${TROJAN_PASSWORD}
+    container_name: trojan
+    ports:
+      - "1080:1080"
+    networks:
+      - proxynet
+    restart: always
+  privoxy:
+    build:
+      context: privoxy
+    container_name: privoxy
+    ports:
+      - "1081:8118"
+    volumes:
+      - ./privoxy/config:/etc/privoxy/config:ro
+    depends_on:
+      - trojan
+    networks:
+      - proxynet
+    restart: always
+
+networks:
+  proxynet:
+    driver: bridge
+
