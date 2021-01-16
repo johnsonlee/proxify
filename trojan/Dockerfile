@@ -37,4 +37,6 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
         boost-program_options \
         mariadb-connector-c
 
+EXPOSE 1080
+
 CMD [ "/usr/local/bin/trojan", "-l", "/dev/stdout", "/etc/trojan/client.json" ]

@@ -19,13 +19,29 @@ services:
       context: privoxy
     container_name: privoxy
     ports:
-      - "1081:8118"
+      - "1081:1081"
     volumes:
       - ./privoxy/config:/etc/privoxy/config:ro
     depends_on:
       - trojan
     networks:
       - proxynet
+    restart: always
+  aria2:
+    build:
+      context: aria2
+    container_name: aria2
+    ports:
+      - "6800:6800"
+    restart: always
+  webui-aria2:
+    build:
+      context: webui-aria2
+    container_name: webui-aria2
+    ports:
+      - "9100:80"
+    depends_on:
+      - aria2
     restart: always
 
 networks:
