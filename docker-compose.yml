@@ -45,14 +45,17 @@ services:
     depends_on:
       - aria2
     restart: always
-  httpd:
-    image: arm64v8/httpd:alpine
-    container_name: httpd
+  caddy:
+    image: caddy
+    container_name: caddy
     ports:
-      - "8080:80"
+      - "9200:80"
+    depends_on:
+      - aria2
     volumes:
-      - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - downloads:/usr/local/apache2/htdocs
+      - downloads:/data
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+    restart: always
 
 volumes:
   downloads:
